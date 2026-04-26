@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>STAR-FM</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <video autoplay muted loop playsinline id="bg-video">
+        <source src="fondo-Estrella.mp4" type="video/mp4">
+    </video>
+  <div class="radio-wrap">
+    <div class="header-bar">
+      <div class="logo">S T A R <span class="dot">•</span> F M</div>
+      <div class="status">
+        <span class="dot-live"></span>
+        <span id="status-text">conectando...</span>
+      </div>
+    </div>
+
+    <div class="main-area">
+      <div class="left-panel">
+        <div class="album-art">
+          <img id="cover-img" src="" alt="cover">
+          <div class="vinyl-overlay" id="vinyl"></div>
+        </div>
+        <div class="track-info">
+          <div class="track-label">track</div>
+          <div class="track-value big" id="track-name">---</div>
+          <div class="track-label">artist</div>
+          <div class="track-value" id="artist-name">---</div>
+          <div class="track-label">album</div>
+          <div class="track-value" id="album-name">---</div>
+        </div>
+        <div class="progress-bar">
+        <div class="progress-fill" id="progress"></div>
+</div>
+<div class="time-row">
+  <span id="cur-time">0:00</span>
+  <span id="tot-time">0:00</span>
+</div>
+<div class="spectrum" id="spectrum"></div>
+      </div>
+
+      <div class="lyrics-panel">
+        <div class="lyrics-title">lyrics</div>
+        <div id="lyrics-container">
+          <div class="lyric-line faint">Esperando reproducción...</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
