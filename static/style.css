@@ -69,17 +69,20 @@ body {
 .main-area {
   display: flex;
   height: 480px;
+  overflow: hidden;
 }
 
 .left-panel {
   width: 260px;
   min-width: 260px;
+  height: 480px;
   background: rgba(3, 3, 12, 0.92);
   border-right: 1px solid #1a1a3e;
   padding: 16px;
   display: flex;
   flex-direction: column;
   gap: 12px;
+  overflow: hidden;
 }
 
 .album-art {
@@ -182,11 +185,15 @@ body {
   align-items: flex-end;
   gap: 2px;
   height: 36px;
+  min-height: 36px;
+  max-height: 36px;
   padding: 0 2px;
+  overflow: hidden;
 }
 
 .bar {
   flex: 1;
+  min-width: 0;
   background: #2244aa;
   border-radius: 1px 1px 0 0;
   animation: bounce var(--d) ease-in-out infinite alternate;
@@ -194,7 +201,59 @@ body {
 
 @keyframes bounce {
   to {
-    height: var(--h);
+    height: var(--h) !important;
     background: #4488ff;
   }
+}
+
+.controls {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 4px;
+}
+
+.ctrl-btn {
+  width: 32px;
+  height: 32px;
+  border: 1px solid #223388;
+  background: #0a0a20;
+  border-radius: 4px;
+  color: #4488ff;
+  font-size: 12px;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.ctrl-btn:hover { background: #1a1a40; }
+.ctrl-btn.play { border-color: #4488ff; background: #0d1535; }
+
+.minimize-btn {
+  background: transparent;
+  border: 1px solid #1a1a3e;
+  color: #334488;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 11px;
+  padding: 4px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.minimize-btn:hover { color: #4488ff; border-color: #4488ff; }
+
+.lyrics-panel {
+  flex: 1;
+  background: rgba(2, 2, 12, 0.92);
+  padding: 20px 18px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.lyrics-panel.hidden {
+  flex: 0;
+  padding: 0;
+  width: 0;
+  min-width: 0;
+  overflow: hidden;
 }

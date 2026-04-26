@@ -2,6 +2,7 @@ const socket = io();
 
 let lyrics = [];
 let currentTrackId = null;
+let isPlaying = false;
 
 const trackName = document.getElementById('track-name');
 const artistName = document.getElementById('artist-name');
@@ -13,21 +14,7 @@ const totTime = document.getElementById('tot-time');
 const lyricsContainer = document.getElementById('lyrics-container');
 const statusText = document.getElementById('status-text');
 const dotLive = document.querySelector('.dot-live');
-
-function buildSpectrum() {
-  const s = document.getElementById('spectrum');
-  s.innerHTML = '';
-  for (let i = 0; i < 24; i++) {
-    const b = document.createElement('div');
-    b.className = 'bar';
-    const h = Math.floor(8 + Math.random() * 20);
-    const d = (0.3 + Math.random() * 0.8).toFixed(2);
-    b.style.cssText = `height:${h}px;--h:${Math.floor(18 + Math.random() * 16)}px;--d:${d}s;`;
-    s.appendChild(b);
-  }
-}
-
-buildSpectrum();
+const playBtn = document.getElementById('play-btn');
 
 function formatTime(ms) {
   const total = Math.floor(ms / 1000);
@@ -41,9 +28,7 @@ function renderLyrics(progressMs) {
 
   let activeIndex = 0;
   for (let i = 0; i < lyrics.length; i++) {
-    if (lyrics[i].time <= progressMs) {
-      activeIndex = i;
-    }
+    if (lyrics[i].time <= progressMs) activeIndex = i;
   }
 
   lyricsContainer.innerHTML = '';
@@ -80,6 +65,55 @@ async function fetchLyrics(artist, track) {
   }
 }
 
+function buildSpectrum() {
+  const s = document.getElementById('spectrum');
+  s.innerHTML = '';
+  for (let i = 0; i < 24; i++) {
+    const b = document.createElement('div');
+    b.className = 'bar';
+    const h = Math.floor(8 + Math.random() * 20);
+    const d = (0.3 + Math.random() * 0.8).toFixed(2);
+    b.style.cssText = `height:${h}px;--h:${Math.floor(18 + Math.random() * 16)}px;--d:${d}s;`;
+    s.appendChild(b);
+  }
+}
+
+function updatePlayBtn() {
+  playBtn.innerHTML = isPlaying ? '&#9646;&#9646;' : '&#9654;';
+}
+
+async function togglePlay() {
+  await fetch('/pause');
+}
+
+async function nextTrack() {
+  await fetch('/next');
+  lyrics = [];
+  currentTrackId = null;
+  lyricsContainer.innerHTML = '<div class="lyric-line faint">Cargando letras...</div>';
+}
+
+async function prevTrack() {
+  await fetch('/prev');
+  lyrics = [];
+  currentTrackId = null;
+  lyricsContainer.innerHTML = '<div class="lyric-line faint">Cargando letras...</div>';
+}
+
+let lyricsVisible = true;
+function toggleLyrics() {
+  lyricsVisible = !lyricsVisible;
+  const panel = document.querySelector('.lyrics-panel');
+  const btn = document.getElementById('minimize-btn');
+  if (lyricsVisible) {
+    panel.classList.remove('hidden');
+    btn.innerHTML = '&#9660; letras';
+  } else {
+    panel.classList.add('hidden');
+    btn.innerHTML = '&#9658; letras';
+  }
+}
+
 socket.on('connect', () => {
   statusText.textContent = 'online';
   dotLive.classList.add('on');
@@ -94,9 +128,13 @@ socket.on('playback', (data) => {
   if (!data.is_playing) {
     statusText.textContent = 'pausado';
     dotLive.classList.remove('on');
+    isPlaying = false;
+    updatePlayBtn();
     return;
   }
 
+  isPlaying = true;
+  updatePlayBtn();
   statusText.textContent = 'online';
   dotLive.classList.add('on');
 
@@ -119,3 +157,5 @@ socket.on('playback', (data) => {
 
   renderLyrics(data.progress_ms + 450);
 });
+
+buildSpectrum();

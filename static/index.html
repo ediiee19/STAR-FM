@@ -32,6 +32,11 @@
           <div class="track-label">album</div>
           <div class="track-value" id="album-name">---</div>
         </div>
+        <div class="controls">
+            <button class="ctrl-btn" onclick="prevTrack()">&#9664;&#9664;</button>
+            <button class="ctrl-btn play" id="play-btn" onclick="togglePlay()">&#9646;&#9646;</button>
+            <button class="ctrl-btn" onclick="nextTrack()">&#9654;&#9654;</button>
+        </div>
         <div class="progress-bar">
         <div class="progress-fill" id="progress"></div>
 </div>
@@ -39,6 +44,7 @@
   <span id="cur-time">0:00</span>
   <span id="tot-time">0:00</span>
 </div>
+<button class="minimize-btn" id="minimize-btn" onclick="toggleLyrics()">&#9660; letras</button>
 <div class="spectrum" id="spectrum"></div>
       </div>
 
