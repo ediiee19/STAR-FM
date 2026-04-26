@@ -1,0 +1,1 @@
+print("Star-FM iniciando....")
